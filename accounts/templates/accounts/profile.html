@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        .profile-info {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .profile-info p {
+            margin: 5px 0;
+        }
+        .profile-info strong {
+            color: #555;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Profile</h1>
+
+    <div class="profile-info">
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>First Name:</strong> {{ user.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+
+        {% if profile %}
+            <p><strong>Phone:</strong> {{ profile.phone }}</p>
+            <p><strong>Address:</strong> {{ profile.address }}</p>
+            <p><strong>Age:</strong> {{ profile.age }}</p>
+            <p><strong>First Join:</strong> {{ profile.first_join }}</p>
+            <p><strong>Last Join:</strong> {{ profile.last_join }}</p>
+            <p><strong>Gender:</strong> {{ profile.gender }}</p>
+            <p><strong>Birth Date:</strong> {{ profile.birth_date }}</p>
+            <p><strong>Interests:</strong> 
+                {% if profile.interests %}
+                    {{ profile.interests|slice:":-2" }}  <!-- Removes the trailing comma and space -->
+                {% else %}
+                    No interests listed.
+                {% endif %}
+            </p>
+
+            <!-- Display login counts -->
+            <p><strong>Daily Logins:</strong> {{ daily_login_count }}</p>
+            <p><strong>Weekly Logins:</strong> {{ weekly_login_count }}</p>
+            <p><strong>Monthly Logins:</strong> {{ monthly_login_count }}</p>
+            <p><strong>Yearly Logins:</strong> {{ yearly_login_count }}</p>
+
+        {% else %}
+            <p>No profile information available.</p>
+        {% endif %}
+    </div>
+
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>
