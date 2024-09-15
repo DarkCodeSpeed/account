@@ -75,22 +75,5 @@
 
     <a href="{% url 'home' %}">Back to Home</a>
 
-    <script>
-        function updateOnlineTime() {
-            fetch("{% url 'update_online_time' %}", { method: 'GET' })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        document.getElementById('online-time').textContent = data.online_time;
-                    }
-                });
-        }
-
-        // Update online time every 1 second (1000 milliseconds)
-        setInterval(updateOnlineTime, 1000);
-
-        // Initial update
-        updateOnlineTime();
-    </script>
 </body>
 </html>
