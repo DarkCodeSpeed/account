@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import timedelta
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -13,7 +14,7 @@ class UserProfile(models.Model):
     last_join = models.DateTimeField(default=timezone.now)
     age = models.PositiveIntegerField(blank=True, null=True)
 
-    # Add fields to track login counts
+    # Login count tracking
     daily_login_count = models.IntegerField(default=0)
     weekly_login_count = models.IntegerField(default=0)
     monthly_login_count = models.IntegerField(default=0)
@@ -21,6 +22,10 @@ class UserProfile(models.Model):
 
     # To track when the counts were last reset
     last_login_date = models.DateField(auto_now=True)
+
+    # Online time tracking fields
+    last_activity = models.DateTimeField(null=True, blank=True)
+    online_time = models.DurationField(default=timedelta)
 
     def __str__(self):
         return f"{self.user.username}'s profile"

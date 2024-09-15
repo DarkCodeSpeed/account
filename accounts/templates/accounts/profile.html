@@ -65,11 +65,32 @@
             <p><strong>Monthly Logins:</strong> {{ monthly_login_count }}</p>
             <p><strong>Yearly Logins:</strong> {{ yearly_login_count }}</p>
 
+            <!-- Display online time -->
+            <p><strong>Total Online Time:</strong> <span id="online-time">{{ online_time }}</span> seconds</p> 
+
         {% else %}
             <p>No profile information available.</p>
         {% endif %}
     </div>
 
     <a href="{% url 'home' %}">Back to Home</a>
+
+    <script>
+        function updateOnlineTime() {
+            fetch("{% url 'update_online_time' %}", { method: 'GET' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('online-time').textContent = data.online_time;
+                    }
+                });
+        }
+
+        // Update online time every 1 second (1000 milliseconds)
+        setInterval(updateOnlineTime, 1000);
+
+        // Initial update
+        updateOnlineTime();
+    </script>
 </body>
 </html>

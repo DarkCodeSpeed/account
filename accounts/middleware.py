@@ -41,10 +41,16 @@ class UpdateLoginInfoMiddleware(MiddlewareMixin):
 
                 # Increment the login counters only on new login
                 user_profile.daily_login_count += 1
-                # user_profile.weekly_login_count += 1
-                # user_profile.monthly_login_count += 1
-                # user_profile.yearly_login_count += 1
 
                 # Update the last login date in user profile
                 user_profile.last_login_date = current_date
-                user_profile.save()
+
+            # Track and record user online time
+            if user_profile.last_activity:
+                # Calculate the time difference since the last request and add it to the total online time
+                time_diff = now - user_profile.last_activity
+                user_profile.online_time += time_diff
+
+            # Update the last activity time to the current request time
+            user_profile.last_activity = now
+            user_profile.save()
