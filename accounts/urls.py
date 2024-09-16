@@ -12,7 +12,3 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('update-online-time/', views.update_online_time_view, name='update_online_time'),
 ]
-
-# urlpatterns = [
-#     # Your other URL patterns
-# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

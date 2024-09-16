@@ -4,40 +4,194 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+        /* Basic reset and existing styles */
+        body, h1, p, a {
+            margin: 0;
             padding: 0;
+            font-family: 'Arial', sans-serif;
         }
-        h1 {
+
+        body {
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            position: relative;
+        }
+
+        /* Heavy Background Animation */
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5a623, #f39c12, #e74c3c, #d35400);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite, moveBackground 60s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+
+        @keyframes moveBackground {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                transform: scale(1.1) rotate(360deg);
+            }
+        }
+
+        .navbar {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .navbar .brand {
+            font-size: 30px;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .navbar .btn-container {
+            display: flex;
+            gap: 20px; /* Space between buttons */
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.4);
+            color: #000;
+            transform: translateY(-3px); /* Subtle lift effect */
+        }
+
+        .navbar a.btn.logout {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+            margin-right: 50px;
+        }
+
+        .navbar a.btn.logout:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+        }
+
+        .profile-info {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            text-align: left;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            margin-top: 80px; /* Space for the navbar */
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-info p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .profile-info strong {
             color: #333;
         }
-        .profile-info {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-        .profile-info p {
-            margin: 5px 0;
-        }
-        .profile-info strong {
-            color: #555;
-        }
-        a {
-            color: #007BFF;
+
+        /* .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #fff;
             text-decoration: none;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s ease, color 0.3s ease;
+        } */
+
+        .back-link:hover {
+            background: rgba(0, 0, 0, 0.9);
+            color: #f5a623;
         }
-        a:hover {
-            text-decoration: underline;
+
+        .online-time {
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 22px;
+            font-weight: 600;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 100px; /* Positioned below the welcome message */
+            right: 20px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #fff;
+        }
+
+        .online-time .icon {
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
-    <h1>User Profile</h1>
+    <div class="background-animation"></div>
+
+    <div class="navbar">
+        <div class="brand">Asef's App</div>
+        <div class="btn-container">
+            <a href="{% url 'home' %}" class="btn">Home</a>
+            <a href="{% url 'logout' %}" class="btn logout">Logout</a>
+        </div>
+    </div>
 
     <div class="profile-info">
+        <h1>User Profile</h1>
         <p><strong>Username:</strong> {{ user.username }}</p>
         <p><strong>Email:</strong> {{ user.email }}</p>
         <p><strong>First Name:</strong> {{ user.first_name }}</p>
@@ -66,14 +220,21 @@
             <p><strong>Yearly Logins:</strong> {{ yearly_login_count }}</p>
 
             <!-- Display online time -->
-            <p><strong>Total Online Time:</strong> <span id="online-time">{{ online_time }}</span> seconds</p> 
+            <p><strong>Total Online Time:</strong> <span id="online-time">{{ online_time }}</span></p> 
 
         {% else %}
             <p>No profile information available.</p>
         {% endif %}
     </div>
 
-    <a href="{% url 'home' %}">Back to Home</a>
+    <!-- <a href="{% url 'home' %}" class="back-link">Back to Home</a> -->
 
+    <div class="online-time">
+        <i class="fas fa-clock icon"></i>
+        Total Online Time: <span id="online-time">{{ online_time }}</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    
 </body>
 </html>

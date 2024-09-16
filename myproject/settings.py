@@ -38,6 +38,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',  # Required
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'accounts.middleware.UpdateLoginInfoMiddleware',  # Add this line for custom middleware
+    'accounts.middleware.UpdateLastActivityMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'

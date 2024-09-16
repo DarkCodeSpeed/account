@@ -5,130 +5,276 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     
-    {% load static %}
-
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Bootstrap CSS from CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Custom styles -->
     <style>
         body {
-            font-family: 'Montserrat', Arial, sans-serif;
-            background-color: #f4f4f9;
-            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            background-size: 200% 200%;
+            animation: gradientAnimation 5s ease infinite;
             margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+            overflow: hidden;
         }
 
         .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 30px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            padding: 50px; /* Increased padding */
+            width: 100%;
+            max-width: 600px; /* Increased width */
+            max-height: 90vh; /* Adjusted to allow more height for content */
+            overflow-y: auto; /* Enable vertical scrolling if needed */
+            text-align: center;
+            box-sizing: border-box;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .container::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background: #2575fc;
+            border-radius: 5px;
+        }
+
+        .container::-webkit-scrollbar-thumb:hover {
+            background: #1e3a8a;
         }
 
         h2 {
-            text-align: center;
+            font-size: 2.8em; /* Increased font size */
+            margin-bottom: 30px; /* Increased margin */
             color: #333;
-            margin-bottom: 20px;
-            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .form-group {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 25px; /* Increased margin */
+            text-align: left;
         }
 
         .form-group i {
             position: absolute;
+            left: 12px;
             top: 50%;
-            left: 15px;
             transform: translateY(-50%);
-            font-size: 18px;
-            color: #007BFF;
+            font-size: 1.5em; /* Increased icon size */
+            color: #888;
         }
 
-        .form-group input, .form-group select {
-            padding: 10px 15px 10px 40px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .btn-primary {
-            background-color: #007BFF;
-            border: none;
-            color: white;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            width: 100%;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        .alert-danger {
-            color: red;
-            border: 1px solid red;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .login-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .login-link a {
-            color: #007BFF;
-            text-decoration: none;
+        .form-group label {
+            display: block;
+            margin-bottom: 10px; /* Increased margin */
+            color: #555;
+            font-size: 1.1em; /* Increased font size */
             font-weight: 500;
         }
 
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group input[type="email"],
+        .form-group input[type="checkbox"] {
+            padding: 16px 16px 16px 50px; /* Increased padding */
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 1.1em; /* Increased font size */
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            width: 100%;
+            outline: none;
+        }
+
+        .form-group input[type="checkbox"] {
+            padding: 0;
+            width: auto;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus,
+        .form-group input[type="email"]:focus {
+            border-color: #2575fc;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        .form-group input[type="checkbox"]:checked::before {
+            content: '✓';
+            font-size: 1.2em; /* Increased checkmark size */
+            color: #fff;
+            display: block;
+            text-align: center;
+            line-height: 1.5;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .custom-checkbox {
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            margin: 15px 0; /* Increased margin */
+        }
+
+        .custom-checkbox input[type="checkbox"] {
+            appearance: none;
+            width: 24px; /* Increased size */
+            height: 24px; /* Increased size */
+            border: 2px solid #2575fc;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            position: relative;
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked {
+            background-color: #2575fc;
+            border-color: #2575fc;
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked::before {
+            content: '✓';
+            color: #fff;
+            font-size: 16px; /* Increased checkmark size */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            line-height: 1.5;
+        }
+
+        .custom-checkbox label {
+            margin-left: 12px; /* Increased margin */
+            font-size: 1.1em; /* Increased font size */
+            color: #555;
+        }
+
+        .btn-primary {
+            background-color: #2575fc;
+            color: #fff;
+            padding: 16px; /* Increased padding */
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em; /* Increased font size */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 30px; /* Increased margin */
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            margin-bottom: 30px; /* Increased margin */
+            text-align: left;
+            border-radius: 12px;
+            padding: 15px;
+            background-color: #f8d7da;
+            color: #721c24;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-link {
+            margin-top: 30px; /* Increased margin */
+            font-size: 1.1em; /* Increased font size */
+            color: #555;
+        }
+
+        .login-link a {
+            color: #2575fc;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
         .login-link a:hover {
+            color: #1e3a8a;
             text-decoration: underline;
         }
 
-        /* Responsive Styles */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
         @media (max-width: 768px) {
             .container {
-                padding: 20px;
-                margin: 20px;
-            }
-
-            .btn-primary {
-                padding: 10px;
-                font-size: 14px;
+                padding: 25px; /* Adjusted padding for smaller screens */
+                max-width: 90%;
+                max-height: 90vh;
             }
 
             h2 {
-                font-size: 24px;
+                font-size: 2.2em; /* Adjusted font size */
+            }
+
+            .btn-primary {
+                font-size: 1.1em; /* Adjusted font size */
+                padding: 14px; /* Adjusted padding */
+            }
+
+            .form-group input {
+                padding: 14px 14px 14px 45px; /* Adjusted padding */
+                font-size: 1em; /* Adjusted font size */
             }
         }
 
         @media (max-width: 480px) {
             .container {
-                padding: 15px;
-                margin: 10px;
-            }
-
-            .btn-primary {
-                padding: 10px;
-                font-size: 14px;
+                padding: 20px; /* Adjusted padding for extra small screens */
+                max-width: 95%;
+                max-height: 95vh;
             }
 
             h2 {
-                font-size: 20px;
+                font-size: 2em; /* Adjusted font size */
             }
 
-            .form-group {
-                margin-bottom: 15px;
+            .btn-primary {
+                font-size: 1em; /* Adjusted font size */
+                padding: 12px; /* Adjusted padding */
+            }
+
+            .form-group input {
+                padding: 12px 12px 12px 40px; /* Adjusted padding */
+                font-size: 0.9em; /* Adjusted font size */
             }
         }
     </style>
@@ -152,14 +298,16 @@
         {% endif %}
 
         <!-- Sign up form -->
-        <form method="POST" enctype="multipart/form-data" class="signup-form">
+        <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           
           <!-- Iterate through form fields to add icons and help texts -->
           {% for field in form %}
             <div class="form-group">
-              <!-- Add an icon for each field -->
-              <i class="bi bi-{{ field.name }}"></i>
+              <!-- Add an icon for each field except phone -->
+              {% if field.name != 'phone' %}
+                <i class="fas fa-{{ field.name }}"></i>
+              {% endif %}
               {{ field.label_tag }}
               {{ field }}
             </div>
@@ -173,7 +321,10 @@
         </p>
     </div>
     
-    <!-- Include Bootstrap JS -->
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- Include jQuery from CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Bootstrap JS from CDN -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

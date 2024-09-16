@@ -3,144 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="User profile page for viewing online time and accessing profile settings.">
+    <meta name="keywords" content="profile, online time, user, account">
+    <meta name="author" content="Your Name">
     <title>Welcome</title>
     {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+        /* Basic reset and existing styles */
+        body, h1, p, a {
             margin: 0;
-            overflow-x: hidden;
-            animation: fadeIn 1s ease-in;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            opacity: 0;
-            animation: slideIn 1s forwards;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 2.5em;
-        }
-
-        p {
-            color: #666;
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-
-        .image-container {
-            position: relative;
-            display: inline-block;
+        body {
             overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            position: relative;
         }
 
-        .image-container img {
-            display: block;
+        /* Heavy Background Animation */
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
-            transition: opacity 0.5s ease;
+            height: 100%;
+            background: linear-gradient(135deg, #f5a623, #f39c12, #e74c3c, #d35400);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite, moveBackground 60s linear infinite;
+            z-index: -1;
         }
 
-        .image-container:hover img {
-            opacity: 0.8;
-            transform: scale(1.05);
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
         }
 
-        .image-container:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        @keyframes moveBackground {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                transform: scale(1.1) rotate(360deg);
+            }
         }
 
-        .btn {
-            display: inline-block;
-            margin: 10px;
-            padding: 12px 20px;
+        .navbar {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .navbar .brand {
+            font-size: 30px;
+            font-weight: 700;
             color: #fff;
-            background-color: #007BFF;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .navbar .btn-container {
+            display: flex;
+            gap: 20px; /* Space between buttons */
+        }
+
+        .navbar a {
+            color: #fff;
             text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+            border: 1px solid transparent;
         }
 
-        .btn:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.4);
+            color: #000;
+            transform: translateY(-3px); /* Subtle lift effect */
         }
 
-        .btn.logout {
-            background-color: #dc3545;
+        .navbar a.btn.logout {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+            margin-right: 50px;
         }
 
-        .btn.logout:hover {
-            background-color: #c82333;
+        .navbar a.btn.logout:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .welcome-message {
+            text-align: left;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 90px; /* Below the navbar */
+            left: 20px;
+            z-index: 2;
+            width: auto; /* Adjust based on content */
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .welcome-message h1 {
+            font-size: 26px;
+            margin: 0;
+            font-weight: 700;
         }
 
-        /* Styling for online time display */
         .online-time {
-            font-size: 1.5em;
-            color: #007BFF;
-            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 22px;
+            font-weight: 600;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 100px; /* Positioned below the welcome message */
+            right: 20px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #fff;
+        }
+
+        .online-time .icon {
+            font-size: 24px;
+        }
+
+        /* Floating particles animation */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .navbar .btn-container {
+                margin-top: 10px;
+                gap: 15px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Our Site!</h1>
-        <p>We’re glad to have you here. Enjoy exploring our content and features.</p>
+    <div class="background-animation"></div>
 
-        <div class="image-container">
-            <img class="image-thumbail" src="{% static 'path/to/default/image.jpg' %}" alt="Default Image" width="250px">
-        </div>
-
-        <!-- Online time display -->
-        <p class="online-time">Total Online Time: <span id="online-time">{{ online_time }}</span> seconds</p>
-
+    <div class="navbar">
+        <div class="brand">Asef's App</div>
         <div class="btn-container">
-            <a href="{% url 'profile' %}" class="btn">View Profile</a>
-            <a href="{% url 'logout' %}" class="btn logout">Log Out</a>
+            <a href="{% url 'profile' %}" class="btn">Profile</a>
+            <a href="{% url 'logout' %}" class="btn logout">Logout</a>
         </div>
     </div>
 
+    <div class="welcome-message">
+        <h1>Welcome, {{ request.user.username }}!</h1>
+    </div>
+
+    <div class="online-time">
+        <i class="fas fa-clock icon"></i>
+        Total Online Time: <span id="online-time">{{ online_time }}</span>
+    </div>
+    <div class="particles" id="particles-js"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
     <script>
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 80
+                },
+                "size": {
+                    "value": 4
+                },
+                "line_linked": {
+                    "enable": true,
+                    "opacity": 0.5
+                },
+                "move": {
+                    "speed": 2
+                }
+            },
+            "interactivity": {
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    }
+                }
+            }
+        });
+
         function updateOnlineTime() {
-            fetch("{% url 'update_online_time' %}", { method: 'GET' })
+            fetch("{% url 'update_online_time' %}")
                 .then(response => response.json())
                 .then(data => {
-                    if (data.status === 'success') {
-                        document.getElementById('online-time').textContent = data.online_time;
-                    }
+                    document.getElementById('online-time').textContent = data.online_time;
                 });
         }
 
-        // Update online time every 1 second (1000 milliseconds)
         setInterval(updateOnlineTime, 1000);
-
-        // Initial update
-        updateOnlineTime();
     </script>
 </body>
 </html>
